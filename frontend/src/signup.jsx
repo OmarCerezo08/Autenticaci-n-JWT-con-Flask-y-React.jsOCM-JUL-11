@@ -2,18 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Signup = () => {
-    // Estados para controlar lo que el usuario escribe en los inputs
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    // Función que se activa en el onSubmit del formulario
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Evita que la página se recargue por defecto
+        e.preventDefault(); 
         
         try {
-            // Realizamos la petición POST al endpoint del backend
-            const response = await fetch("http://localhost:3001/user", {
+            const response = await fetch("https://effective-space-halibut-5g9x7v9564xx366q-3001.app.github.dev/api/signup", {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json" 
@@ -23,17 +20,15 @@ export const Signup = () => {
 
             const data = await response.json();
 
-            if (response.ok) {
-                // Si el estado es 200, notificamos y redirigimos a /login
+            if (response.status === 201 || response.ok) {
                 alert("¡Registro exitoso! Redirigiendo al inicio de sesión...");
                 navigate("/login"); 
             } else {
-                // Si el backend responde con un error (400), mostramos el mensaje
                 alert(data.msg || "Ocurrió un error al registrarse");
             }
         } catch (error) {
             console.error("Error en la conexión:", error);
-            alert("No se pudo conectar con el servidor backend.");
+            alert("Error de conexión. Asegúrate de que el puerto 3001 esté en modo Public en la pestaña PORTS.");
         }
     };
 
@@ -70,3 +65,5 @@ export const Signup = () => {
         </div>
     );
 };
+
+
